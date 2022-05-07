@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const app = express();
+require('dotenv').config();
 
 // Set Port
 const port = process.env.PORT || 5000;
@@ -18,7 +19,16 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     try {
         await client.connect();
-        const bookCollection = client.db('inventory').collection('books');
+        const bookCollection = client.db('inventory').collection('book');
+
+        // Create API for get all books
+        app.get('/book', async (req, res) => {
+            const query = {};
+            const cursor = bookCollection.find(query);
+            const books = await cursor.toArray();
+            res.send(books);
+        });
+
     } finally { }
 }
 run().catch(console.dir);
