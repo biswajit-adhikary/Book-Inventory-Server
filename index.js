@@ -37,6 +37,13 @@ async function run() {
             res.send(book);
         });
 
+        // Create API for add new book
+        app.post('/book', async (req, res) => {
+            const newBook = req.body;
+            const result = await bookCollection.insertOne(newBook);
+            res.send(result);
+        })
+
     } finally { }
 }
 run().catch(console.dir);
