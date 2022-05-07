@@ -61,6 +61,22 @@ async function run() {
             res.send(items);
         })
 
+        // Update Quantity API
+        app.put('/book/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log(id);
+            const updatedBook = req.body;
+            const query = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: {
+                    quantity: updatedBook.newNumber
+                }
+            };
+            const result = await bookCollection.updateOne(query, updatedDoc, options);
+            res.send(result);
+        })
+
     } finally { }
 }
 run().catch(console.dir);
