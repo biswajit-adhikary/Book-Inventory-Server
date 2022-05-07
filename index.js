@@ -52,6 +52,15 @@ async function run() {
             res.send(result);
         })
 
+        // Get My Items API
+        app.get('/my-items', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            const cursor = bookCollection.find(query);
+            const items = await cursor.toArray();
+            res.send(items);
+        })
+
     } finally { }
 }
 run().catch(console.dir);
